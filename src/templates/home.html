@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/home.css") }}">
+    <script src="{{ url_for("static", filename="js/home.js") }}"></script>
+    <title>url shortener</title>
+</head>
+<body>
+    <div id="form-cont">
+        <form action="#" method="POST">
+            <input type="text" name="url" placeholder="Url">
+            <input id="submit-btn" type="submit" value="Shorten" name="subbtn">
+        </form>
+    </div>
+</body>
+</html>
