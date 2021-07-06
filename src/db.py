@@ -2,28 +2,42 @@ import sqlite3
 import random
 import string
 
-conn = sqlite3.connect("db.sqlite")
-cursor = conn.cursor()
 
-def add_url(url):
+def add_url(url, conn, c) -> str:
     id = ""
     for _ in range(5):
         id += str(random.choice(string.printable))
-    cursor.execute(f"INSERT INTO urls VALUES ('{id}', '{url}')")
+    c.execute(f"INSERT INTO urls VALUES ('{id}', '{url}')")
     conn.commit()
+    return id
     
-def add_url_and_id(url, id):
-    pass
+def add_url_and_id(url, id, conn, c):
+    if get_url(id, c) == None:
+        c.execute(f"INSERT INTO urls VALUES ('{id}', '{url}')")
+        conn.commit()
+        return "url created"
+    return "url already exists"
+    
 
-def get_url(id):
-    cursor.execute(f"SELECT * FROM urls WHERE id='{id}'")
-    result = cursor.fetchone()
-    return result[1]
+def remove_url(id, conn, c):
+    if get_url(id, c) != None:
+        c.execute(f"DELETE FROM urls WHERE id='{id}'")
+        conn.commit()
+        return "url deleted"
+    return "url does not exist or was already deleted"
+    
 
-def show_all():
-    cursor.execute("SELECT * FROM urls")
-    result = cursor.fetchall()
+
+def get_url(id, c):
+    c.execute(f"SELECT * FROM urls WHERE id='{id}'")
+    result = c.fetchone()
+    if result != None:
+        return result[-1]
+    return None
+
+
+def show_all(c):
+    c.execute("SELECT * FROM urls")
+    result = c.fetchall()
     print(result)
     
-def close_connection():
-    conn.close()
