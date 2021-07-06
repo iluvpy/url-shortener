@@ -2,11 +2,16 @@ import sqlite3
 import random
 import string
 
+def random_id(len=5):
+    id = ""
+    for _ in range(len):
+        id += random.choice(string.printable) 
+    return id
 
 def add_url(url, conn, c) -> str:
-    id = ""
-    for _ in range(5):
-        id += str(random.choice(string.printable))
+    # find id that wasnt used yet
+    id = random_id()
+    
     c.execute(f"INSERT INTO urls VALUES ('{id}', '{url}')")
     conn.commit()
     return id
