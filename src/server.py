@@ -4,6 +4,8 @@ import sqlite3
 from db import *
 app = Flask(__name__)
 
+host = "localhost"
+port = 5000
 
 def center(s: str):
     return f"<center>{s}</center>"
@@ -11,8 +13,7 @@ def center(s: str):
 
 def get_conn_and_c():
     conn = sqlite3.connect("db.sqlite")
-    c = conn.cursor()
-    return conn, c
+    return conn, conn.cursor()
 
 @app.route("/<url_id>")
 def url(url_id):
@@ -41,7 +42,11 @@ def home():
     if request.method == "GET":
         return render_template("home.html")
     else: 
-        return render_template("home.html")
+        conn, c = get_conn_and_c()
+        id = add_url(request.form["url"], conn, c)
+        url = f"http://{host}:{port}/{id}"
+        ctx = {"url": url}
+        return render_template("created.html", context=ctx)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host=host, port=port)
