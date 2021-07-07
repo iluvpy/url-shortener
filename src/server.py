@@ -11,10 +11,6 @@ def center(s: str):
     return f"<center>{s}</center>"
 
 
-def get_conn_and_c():
-    conn = sqlite3.connect("db.sqlite")
-    return conn, conn.cursor()
-
 @app.route("/<url_id>")
 def url(url_id):
     conn, c = get_conn_and_c()
@@ -25,8 +21,7 @@ def url(url_id):
 @app.route("/curl/<url>/<id>/")
 def add_new_url(url, id):
     conn, c = get_conn_and_c()
-    if "\\\\" in url:
-        url = url.replace("\\\\", "//")
+    
     res = add_url_and_id(url, id, conn, c)
     conn.close()
     return center(res)
@@ -47,6 +42,18 @@ def home():
         url = f"http://{host}:{port}/{id}"
         ctx = {"url": url}
         return render_template("created.html", context=ctx)
+
+@app.route("/urls")
+def urls():
+    conn, c = get_conn_and_c()
+    urls = get_all_urls(c)
+    ctx = {
+        "urls": urls,
+        "host": host,
+        "port": port,
+        "len": len(urls)
+    }
+    return render_template("urls.html", context=ctx)
 
 if __name__ == "__main__":
     app.run(debug=True, host=host, port=port)
