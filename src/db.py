@@ -2,15 +2,24 @@ import sqlite3
 import random
 import string
 
-def random_id(len=5):
+def get_conn_and_c():
+    conn = sqlite3.connect("db.sqlite")
+    return conn, conn.cursor()
+
+def random_id(c, len=5):
     id = ""
-    for _ in range(len):
-        id += random.choice(string.printable) 
-    return id
+    for _ in range(5):
+        id += random.choice(f"{string.ascii_letters}{string.digits}")
+
+    res = get_url(id, c)
+    if res == None:
+        return id
+    return random_id(c, len)
+
 
 def add_url(url, conn, c) -> str:
     # find id that wasnt used yet
-    id = random_id()
+    id = random_id(c)
     
     c.execute(f"INSERT INTO urls VALUES ('{id}', '{url}')")
     conn.commit()
@@ -41,8 +50,11 @@ def get_url(id, c):
     return None
 
 
-def show_all(c):
+def get_all_urls(c):
     c.execute("SELECT * FROM urls")
     result = c.fetchall()
-    print(result)
+    return result
+
+def show_all(c):
+    print(get_all_urls(c))
     
