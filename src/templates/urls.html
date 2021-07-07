@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>all urls</title>
+    <link rel="stylesheet" href="{{ url_for("static", filename="js/urls.js")}}">
+    <script src="{{ url_for ("static", filename="js/urls.js")}}"></script>
+</head>
+<body>
+    <center>
+        <ul>
+            {% for url in context.urls %}
+                <button id="{{url[0]}}" onclick="del_url_id('{{url[0]}}')()">Delete</button>
+                <h2>
+                    <a href="{{url[1]}}" _blank>{{url[0]}}</a> 
+                    stands for <a href="{{url[1]}}" _blank>{{url[1]}}</a>
+                </h2>
+            {% endfor %}
+
+        </ul>
+    </center>
+</body>
+</html>
