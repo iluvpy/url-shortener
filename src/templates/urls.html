@@ -12,7 +12,7 @@
     <center>
         <ul>
             {% for url in context.urls %}
-                <button id="{{url[0]}}" onclick="del_url_id('{{url[0]}}')()">Delete</button>
+                <button id="{{url[0]}}" onclick="del_url_id('{{url[0]}}')">Delete</button>
                 <h2>
                     <a href="{{url[1]}}" _blank>{{url[0]}}</a> 
                     stands for <a href="{{url[1]}}" _blank>{{url[1]}}</a>
