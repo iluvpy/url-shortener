@@ -2,6 +2,7 @@ import sqlite3
 import random
 import string
 
+# XXX need a more safer way to access db.sqlite
 def get_conn_and_c():
     conn = sqlite3.connect("db.sqlite")
     return conn, conn.cursor()
